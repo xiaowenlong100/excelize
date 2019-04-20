@@ -305,7 +305,10 @@ func (xlsx *xlsxC) getValueFrom(f *File, d *xlsxSST) (string, error) {
 	switch xlsx.T {
 	case "s":
 		xlsxSI := 0
-		xlsxSI, _ = strconv.Atoi(xlsx.V)
+		xlsxSI, e := strconv.Atoi(xlsx.V)
+		if e != nil {
+			return "", nil
+		}
 		if len(d.SI[xlsxSI].R) > 0 {
 			value := ""
 			for _, v := range d.SI[xlsxSI].R {
