@@ -148,6 +148,17 @@ func checkSheet(xlsx *xlsxWorksheet) {
 	sheetData := xlsxSheetData{}
 	existsRows := map[int]int{}
 	for k := range xlsx.SheetData.Row {
+		if xlsx.SheetData.Row[k].R == 0 {
+			xlsx.SheetData.Row[k].R = k + 1
+			for j := range xlsx.SheetData.Row[k].C {
+				if xlsx.SheetData.Row[k].C[j].R == "" {
+					colName, _ := ColumnNumberToName(j + 1)
+					xlsx.SheetData.Row[k].C[j].R = fmt.Sprintf("%s%d", colName, k+1)
+				} else {
+					break
+				}
+			}
+		}
 		existsRows[xlsx.SheetData.Row[k].R] = k
 	}
 	for i := 0; i < row; i++ {
